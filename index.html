@@ -63,6 +63,7 @@ $(document).ready(function() {
 	    //  Alert the user that time is up.
 	    alert("Time Up!");
 		clearInterval(intervalId);
+		location.reload();
       }
     }
 
@@ -73,6 +74,18 @@ $(document).ready(function() {
 
 		$("#screen").empty();
 	
+		intervalId = setInterval(decrement, 1000);
+	 
+		var random_pick=Math.floor(Math.random()*upper) ;
+console.log(random_pick);
+		$("#question").html(questions[random_pick]);
+
+		$("#choices").empty();
+
+		for (i=0; i<4; i++) {
+			$("#choices").append((i+1) + " " + choices[(random_pick)*4+i]+"<br><br>");
+		}
+
 
 		document.onkeyup = function(event) {
 			var pick = String.fromCharCode(event.keyCode)
@@ -89,21 +102,14 @@ console.log("Yours answer"+pick);
 
 				continue_game = confirm("Answer is "+ alert +"\n\n"+ "Continue?");
 				
+				if (continue_game) {
 				clearInterval(intervalId);
+				location.reload();
+				} else {
+					stop();
+				}				
 
 			}
-		}
-		intervalId = setInterval(decrement, 1000);
-	 
-		var random_pick=Math.floor(Math.random()*upper) ;
-console.log(random_pick);
-		$("#question").html(questions[random_pick]);
-
-		$("#choices").empty();
-
-		for (i=0; i<4; i++) {
-			$("#choices").append((i+1) + " " + choices[(random_pick)*4+i]+"<br><br>");
-
 		}
 console.log("continue "+continue_game);
 console.log(correct+incorrect+incomplete);
