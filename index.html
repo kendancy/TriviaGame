@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Trivia Game</title>
+
+	<!-- Bootstrap File -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  	<!-- JQuery -->
+  	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.js"></script>
+
+	<!-- My links -->
+	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script type="text/javascript" src="assets/javascript/app.js"></script>
+
+</head>
+<body>
+	<h1>Trivia Game</h1>
+	<br><br>
+	<div id=show-number>Time Remaining: </div>
+	<br><br>
+	<div id=question class=screen></div>
+	<br><br>
+	<div id=choices class=screen></div>
+	<br><br>
+	<div id=answer class=screen></div>
+	<br><br>
+	<div id=choose class=screen>Choose (1-4):</div>
+
+<script>
+
+$(document).ready(function() {
+
+	var questions = ["What is the only manmade object that is observeable from the moon?", "What is the capital of Austrailia?","What is the largest fish in the Ocean?", "Which common word changes it pronounciation when the first letter is capitalized?", "What is the most popular drink in the world that does not contain alcohol?", "What was the first planet th be discovered using a telescope?", "Which country is reputed to have the world's oldest flag design?", "Which country is bordered by both the Atlantic and Indian Oceans?", "Which artist painted a moustache and goatee on the Mona Lisa?","What is the most common blood type found in Humans?"];
+	var answers = ["2", "4", "2", "1", "3", "4", "2", "3", "3", "2", ];
+	var choices = ["Suez Canal", "Great Wall of China","Eifel Tower","Pyramids of Giza","Sydney","Aukland","Melbourne","Canberra", "Great White Shark", "Whale Shark", "Orca", "Man o war","polish","pneumonia","psalms","varnish", "water", "coca-cola", "coffee", "tea", "Jupiter", "Mars", "Pluto", "Uranus", "Italy", "Denmark", "Russia", "Egypt", "New Zealand", "Chile", "South Africa", "Madagascar", "Leonardo Da Vinci", "Andy Worhol", "Marcel Duchamp", "Salvador Dali", "A", "O", "AB", "X"];
+
+	var upper = answers.length;
+
+	var correct = 0;
+	var incorrect = 0;
+	var incomplete =0;
+
+	var number = 10;
+    var intervalId;
+
+	function timeUp() {
+		$("#answer").append("<p>Times Up</p>");
+		incomplete++
+	}
+
+    //  The decrement function.
+    function decrement() {
+		//  Decrease number by one.
+		number--;
+	    //  Show the number in the #show-number tag.
+	    $("#show-number").text("Time Remaining: "+ number);
+	    //  Once number hits zero...
+	    if (number === 0) {
+	    //  ...run the stop function.
+	    stop();
+	    //  Alert the user that time is up.
+	    alert("Time Up!");
+		clearInterval(intervalId);
+      }
+    }
+
+    var continue_game = true;
+    var total_questions = 4;
+
+ //   while (correct+incorrect+incomplete<=total_questions) {
+
+		$("#screen").empty();
+	
+
+		document.onkeyup = function(event) {
+			var pick = String.fromCharCode(event.keyCode)
+console.log("Yours answer"+pick);
+			if ((pick >= "1") && (pick <= "4")) {
+
+				if (pick === answers[random_pick]) {
+					var alert = "Correct";
+					correct++
+				}	else {
+					var alert = "Incorrect";
+					incorrect++
+				}
+
+				continue_game = confirm("Answer is "+ alert +"\n\n"+ "Continue?");
+				
+				clearInterval(intervalId);
+
+			}
+		}
+		intervalId = setInterval(decrement, 1000);
+	 
+		var random_pick=Math.floor(Math.random()*upper) ;
+console.log(random_pick);
+		$("#question").html(questions[random_pick]);
+
+		$("#choices").empty();
+
+		for (i=0; i<4; i++) {
+			$("#choices").append((i+1) + " " + choices[(random_pick)*4+i]+"<br><br>");
+
+		}
+console.log("continue "+continue_game);
+console.log(correct+incorrect+incomplete);
+console.log("total questions "+total_questions);
+//    } 
+
+    $("<div>").html("Correct: "+correct+"<br><br>"+
+    	"Incorrect: "+incorrect+"<br><br>"+
+    	"Unanswered: "+incomplete);
+   
+});
+
+</script>
+</body>
+</html>
